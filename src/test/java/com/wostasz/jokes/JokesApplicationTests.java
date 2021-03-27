@@ -1,4 +1,4 @@
-package com.wostasz.Jokes;
+package com.wostasz.jokes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
