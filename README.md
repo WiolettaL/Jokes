@@ -1,13 +1,13 @@
 # Jokes Application - Backend
 This is an application that tells jokes, based on REST API and using an external api: http://www.icndb.com/api/ to generate jokes.
 
-##Technology stack and tools:
+## Technology stack and tools:
 * Java 11
 * Spring Boot (v 2.4.4)
 * Maven
 * H2 and PostgrSQL
 
-##The content of the task:
+## The content of the task:
 
 * After launching, the application should automatically read the path to the person_db.csv file in the local file system 
 (defined e.g. in application.properties), and then parse and load the file into the "in-memory" structure designed for this purpose, 
