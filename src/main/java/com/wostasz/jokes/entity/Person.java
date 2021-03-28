@@ -22,24 +22,6 @@ public class Person {
     @Column(name = "age", nullable = false)
     private int age;
 
-    @Column(name = "hobby", columnDefinition = "varchar")
-    @Enumerated(EnumType.STRING)
-    private HobbyEnum hobby;
 
-    public enum HobbyEnum {
-        Sports,
-        Gaming,
-        Traveling,
-        Movies,
-        Music,
-        Cooking,
-        Reading,
-        Dancing
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
 }
 

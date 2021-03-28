@@ -15,30 +15,29 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    //zwróci liczbę wszystkich osób
     public long getAllPersonsAmount() {
         return personRepository.count();
     }
 
-    //zwróci liczbę osób o wieku powyżej zadanej wartości
     public List<Person> getPersonsWithAgeHigherThanRequired(int requiredAge) {
 
         List<Person> people = personRepository.findAll();
 
-        List<Person> personList = people.stream()
+        return people.stream()
                 .filter(x -> x.getAge() > requiredAge)
                 .collect(Collectors.toList());
-
-        return personList;
     }
 
-    //zwróci średni wiek wszystkich osób
     public Double getPersonsAverageAge(Person person) {
         Optional<Person> optionalPersons = personRepository.findAll(person.getName());
 
         return optionalPersons
                 .stream()
-                .collect(Collectors.averagingInt(p -> p.getAge()));
+                .collect(Collectors.averagingInt(Person::getAge));
+
+    }
+
+    public void getAllPersonsHobby() {
 
     }
 
