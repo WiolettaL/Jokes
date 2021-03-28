@@ -29,16 +29,16 @@ public class PersonService {
     }
 
     public Double getPersonsAverageAge(Person person) {
-        Optional<Person> optionalPersons = personRepository.findAll(person.getName());
+        List<Person> optionalPersons = personRepository.findAll();
 
         return optionalPersons
                 .stream()
                 .collect(Collectors.averagingInt(Person::getAge));
-
     }
 
     public void getAllPersonsHobby() {
 
     }
+
 
 }

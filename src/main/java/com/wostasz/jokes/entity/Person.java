@@ -1,25 +1,23 @@
 package com.wostasz.jokes.entity;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
-@Entity
-@Table(name = "person")
+@Entity(name = "person_db")
 public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "age", nullable = false)
+    @Column(name = "age")
     private int age;
 
 
