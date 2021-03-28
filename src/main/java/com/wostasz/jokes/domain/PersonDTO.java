@@ -1,4 +1,4 @@
-package com.wostasz.jokes.dto;
+package com.wostasz.jokes.domain;
 
 import lombok.*;
 
@@ -6,12 +6,10 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class PersonDTO {
 
     private String name;
 
     private int age;
-
 
 }

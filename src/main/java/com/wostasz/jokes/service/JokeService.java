@@ -2,7 +2,7 @@ package com.wostasz.jokes.service;
 
 import com.wostasz.jokes.client.JokeResponse;
 import com.wostasz.jokes.client.JokeValue;
-import com.wostasz.jokes.entity.Person;
+import com.wostasz.jokes.domain.Person;
 import com.wostasz.jokes.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

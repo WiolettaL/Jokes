@@ -1,14 +1,15 @@
 package com.wostasz.jokes.service;
 
-import com.wostasz.jokes.entity.Person;
+import com.wostasz.jokes.domain.HobbyEnum;
+import com.wostasz.jokes.domain.Person;
 import com.wostasz.jokes.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+//TODO
 @Service
 public class PersonService {
 
@@ -21,9 +22,9 @@ public class PersonService {
 
     public List<Person> getPersonsWithAgeHigherThanRequired(int requiredAge) {
 
-        List<Person> people = personRepository.findAll();
+        List<Person> personList = personRepository.findAll();
 
-        return people.stream()
+        return personList.stream()
                 .filter(x -> x.getAge() > requiredAge)
                 .collect(Collectors.toList());
     }
@@ -37,8 +38,10 @@ public class PersonService {
     }
 
     public void getAllPersonsHobby() {
-
+        // should return list of all hobbies from all people in db
+        //tabela łącząca Person i HobbyEnum czy jak to ugryźć?
     }
 
+    //should I write methods like createPerson(), updatePerson() etc?
 
 }

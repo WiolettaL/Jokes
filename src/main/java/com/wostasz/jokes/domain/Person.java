@@ -1,4 +1,4 @@
-package com.wostasz.jokes.entity;
+package com.wostasz.jokes.domain;
 
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -19,7 +19,6 @@ public class Person {
 
     @Column(name = "age")
     private int age;
-
 
 }
 
