@@ -43,7 +43,6 @@ public class PersonService {
         return optionalPersons.stream()
                 .map(Person::getHobbyEnum)
                 .collect(Collectors.toList());
-
     }
 
 }
