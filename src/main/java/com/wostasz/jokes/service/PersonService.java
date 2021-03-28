@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//TODO
 @Service
 public class PersonService {
 
@@ -37,11 +36,14 @@ public class PersonService {
                 .collect(Collectors.averagingInt(Person::getAge));
     }
 
-    public void getAllPersonsHobby() {
-        // should return list of all hobbies from all people in db
-        //tabela łącząca Person i HobbyEnum czy jak to ugryźć?
-    }
+    public List<HobbyEnum> getAllHobbies() {
 
-    //should I write methods like createPerson(), updatePerson() etc?
+        List<Person> optionalPersons = personRepository.findAll();
+
+        return optionalPersons.stream()
+                .map(Person::getHobbyEnum)
+                .collect(Collectors.toList());
+
+    }
 
 }

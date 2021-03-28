@@ -1,6 +1,7 @@
 package com.wostasz.jokes.controller;
 
 import com.wostasz.jokes.client.JokeClient;
+import com.wostasz.jokes.exception.JokeTellerNotFoundException;
 import com.wostasz.jokes.service.JokeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:8080")
 @RequestMapping("api/jt")
 public class JokeController {
 
@@ -22,7 +23,7 @@ public class JokeController {
     private JokeService jokeService;
 
     @GetMapping(value = "/joke")
-    public Mono<String> getJoke(@RequestParam("first") String first, @RequestParam("last") String last) {
+    public Mono<String> getJoke(@RequestParam("first") String first, @RequestParam("last") String last) throws JokeTellerNotFoundException {
 
         LOGGER.info("Started method getJoke()");
         return jokeService.getJokeAsync(first, last);
