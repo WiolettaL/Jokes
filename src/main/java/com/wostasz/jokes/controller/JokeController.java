@@ -30,6 +30,8 @@ public class JokeController {
 
     @GetMapping(value = "/joke")
     public Mono<String> getJoke(@RequestParam("first") String first, @RequestParam("last") String last) {
+
+        LOGGER.info("started method");
         return jokeService.getJokeAsync(first, last);
     }
 }
