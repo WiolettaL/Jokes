@@ -44,10 +44,10 @@ public class JokeService {
 
         List<String[]> personList = personService.getPersonsFromCSVFile(optionalPerson);
 
-        List<String> header = personList.size() > 0 ? Arrays.asList(personList.get(0) ): null;
+        List<String> header = personList.size() > 0 ? Arrays.asList(personList.get(0)) : null;
         System.out.println(header != null ? header.toString() : "Header is null");
 
-        if(header == null)
+        if (header == null)
             return null;
 
         int firstNameIndex = header.indexOf("Name");
@@ -56,20 +56,20 @@ public class JokeService {
         int index = -1;
 
         for (String[] strings : personList) {
-            if(strings[firstNameIndex].equals(first) && strings[lastNameIndex].equals(last))
+            if (strings[firstNameIndex].equals(first) && strings[lastNameIndex].equals(last))
                 index = personList.indexOf(strings);
         }
         final int finalIndex = index;
 
-            return client.get()
-                    .uri(uriBuilder -> uriBuilder.path("/jokes/random")
-                            .queryParam("firstName", personList.get(finalIndex)[firstNameIndex])
-                            .queryParam("lastName", String.valueOf(personList.get(finalIndex)[lastNameIndex]))
-                            .build())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono(JokeResponse.class)
-                    .map(jokeResponse -> jokeResponse.getValue().getJoke());
-    }
+        return client.get()
+                .uri(uriBuilder -> uriBuilder.path("/jokes/random")
+                        .queryParam("firstName", personList.get(finalIndex)[firstNameIndex])
+                        .queryParam("lastName", String.valueOf(personList.get(finalIndex)[lastNameIndex]))
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(JokeResponse.class)
+                .map(jokeResponse -> jokeResponse.getValue().getJoke());
 
+    }
 }
