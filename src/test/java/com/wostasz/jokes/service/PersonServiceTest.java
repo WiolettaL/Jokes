@@ -1,3 +1,4 @@
+
 package com.wostasz.jokes.service;
 
 import com.wostasz.jokes.domain.HobbyEnum;
@@ -96,7 +97,7 @@ class PersonServiceTest {
 
         //When
         List<HobbyEnum> hobbies = personList.stream()
-                .map(person -> person.getHobbyEnum())
+                .map(Person::getHobbyEnum)
                 .collect(Collectors.toList());
 
         //Then

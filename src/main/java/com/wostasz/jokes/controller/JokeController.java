@@ -18,7 +18,7 @@ public class JokeController {
     private JokeService jokeService;
 
     @GetMapping(value = "/joke")
-    public Mono<String> getJokeForPerson(@RequestParam("first") String first, @RequestParam("last") String last){
+    public Mono<String> getJokeForPerson(@RequestParam("first") String first, @RequestParam("last") String last) {
         LOGGER.info("Started method getJokeForPerson().");
         return jokeService.getJokeForPerson(first, last);
 

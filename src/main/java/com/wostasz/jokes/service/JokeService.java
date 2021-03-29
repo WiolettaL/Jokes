@@ -4,6 +4,8 @@ import com.wostasz.jokes.client.JokeResponse;
 import com.wostasz.jokes.domain.Person;
 import com.wostasz.jokes.repository.PersonRepository;
 import lombok.SneakyThrows;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.util.Optional;
 
 @Service
 public class JokeService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PersonService.class);
 
     private final WebClient client;
 
@@ -43,6 +47,12 @@ public class JokeService {
         Optional<Person> optionalPerson = personRepository.findByName(first);
 
         List<String[]> personList = personService.getPersonsFromCSVFile(optionalPerson);
+
+        try {
+            personList.contains(optionalPerson);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            logger.error("Person not found. Please select person existed in database." + e);
+        }
 
         List<String> header = personList.size() > 0 ? Arrays.asList(personList.get(0)) : null;
         System.out.println(header != null ? header.toString() : "Header is null");
