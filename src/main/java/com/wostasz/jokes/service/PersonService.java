@@ -35,6 +35,30 @@ public class PersonService {
     public List<String[]> getPersonsFromCSVFile(Optional<Person> byName) throws IOException, CsvException {
         List<String[]> r;
 
+        System.out.println(path);
+        File file = new File(path);
+
+        MultipartFile multipartFile = new MockMultipartFile("test.csv", new FileInputStream(new File(path)));
+
+        System.out.println(file.getAbsolutePath());
+
+        System.out.println("-------------------");
+        List<ArrayList<String>> res = new ArrayList<>();
+        try (
+                InputStream input = multipartFile.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input))
+        ){
+            bufferedReader.lines().forEach(value -> {
+                String[] data = value.split(",",-1);
+                res.add(new ArrayList<String>(Arrays.asList(data)));
+            });
+        } catch (IOException e) {
+
+        }
+
+        System.out.println("-------------------");
+        System.out.println(res.get(1).toString());
+
         try (CSVReader reader = new CSVReader(new FileReader(path))) {
             r = reader.readAll();
             r.forEach(x -> System.out.println(Arrays.toString(x)));

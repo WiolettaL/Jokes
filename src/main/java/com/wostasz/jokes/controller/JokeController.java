@@ -1,7 +1,6 @@
 package com.wostasz.jokes.controller;
 
 import com.wostasz.jokes.client.JokeClient;
-import com.wostasz.jokes.exception.JokeTellerNotFoundException;
 import com.wostasz.jokes.service.JokeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -35,12 +37,12 @@ public class JokeService {
 
     @Autowired
     public JokeService(WebClient.Builder builder) {
-        client = builder.baseUrl("http://www.icndb.com/api/").build();
+        client = builder.baseUrl("http://api.icndb.com/jokes/random").build();
     }
 
     @SneakyThrows
     public Mono<String> getJokeAsync(String first, String last) {
-        String base = "http://api.icndb.com/jokes/random?limitTo=[nerdy]";
+        String base = "http://api.icndb.com/jokes/random";
 
         String url = String.format("%s&firstName=%s&lastName=%s", base, first, last);
 
@@ -67,10 +69,9 @@ public class JokeService {
         }
         final int finalIndex = index;
 
-        if(finalIndex > -1){
+        //if(finalIndex > -1){
             return client.get()
                     .uri(uriBuilder -> uriBuilder.path("/jokes/random")
-                            //.queryParam("limitTo", "[nerdy]")
                             .queryParam("firstName", personList.get(finalIndex)[firstNameIndex])
                             .queryParam("lastName", String.valueOf(personList.get(finalIndex)[lastNameIndex]))
                             .build())
@@ -78,8 +79,7 @@ public class JokeService {
                     .retrieve()
                     .bodyToMono(JokeResponse.class)
                     .map(jokeResponse -> jokeResponse.getValue().getJoke());
-        }
-        return null;
 
     }
+
 }
