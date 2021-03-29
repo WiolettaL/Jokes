@@ -1,5 +1,8 @@
 package com.wostasz.jokes.csv;
 
+import lombok.Data;
+
+@Data
 public class ResponseMessage {
 
     private String message;
@@ -7,22 +10,6 @@ public class ResponseMessage {
 
     public ResponseMessage(String message, String fileDownloadUri) {
         this.message = message;
-        this.fileDownloadUri = fileDownloadUri;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getFileDownloadUri() {
-        return fileDownloadUri;
-    }
-
-    public void setFileDownloadUri(String fileDownloadUri) {
         this.fileDownloadUri = fileDownloadUri;
     }
 

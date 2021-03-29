@@ -7,10 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -32,7 +30,7 @@ class JokeServiceTest {
 
         Logger logger = LoggerFactory.getLogger(JokeServiceTest.class);
 
-        Mono<String> joke = service.getJokeAsync("Anna", "25");
+        Mono<String> joke = service.getJokeForPerson("Anna", "25");
         String jokeString = joke.toString();
 
         logger.info(jokeString);
@@ -45,7 +43,7 @@ class JokeServiceTest {
 
         Person person = new Person("Anna", 30, HobbyEnum.Cooking);
 
-        String joke = service.getJokeAsync("Anna", "30")
+        String joke = service.getJokeForPerson("Anna", "30")
                 .block(Duration.ofSeconds(2));
         logger.info(joke);
         assertTrue(joke.contains("Anna") || joke.contains("30"));
