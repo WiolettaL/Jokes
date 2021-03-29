@@ -1,10 +1,15 @@
 package com.wostasz.jokes.service;
 
+import com.wostasz.jokes.domain.HobbyEnum;
+import com.wostasz.jokes.domain.Person;
 import com.wostasz.jokes.exception.JokeTellerNotFoundException;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;
 
@@ -12,11 +17,13 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
 class JokeServiceTest {
 
-    @Autowired
+    @InjectMocks
     private JokeService service;
+
 
     private Logger logger = LoggerFactory.getLogger(JokeServiceTest.class);
 
@@ -31,5 +38,16 @@ class JokeServiceTest {
         logger.info(jokeString);
 
         assertTrue(jokeString.contains("Anna") || jokeString.contains("25"));
+    }
+
+    @Test
+    public void getJokeAsyncTest() throws JokeTellerNotFoundException {
+
+        Person person = new Person("Anna", 30, HobbyEnum.Cooking);
+
+        String joke = service.getJokeAsync("Anna", "30")
+                .block(Duration.ofSeconds(2));
+        logger.info(joke);
+        assertTrue(joke.contains("Anna") || joke.contains("30"));
     }
 }

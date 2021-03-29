@@ -3,8 +3,8 @@ package com.wostasz.jokes.service;
 import com.wostasz.jokes.client.JokeResponse;
 import com.wostasz.jokes.controller.JokeController;
 import com.wostasz.jokes.domain.Person;
-import com.wostasz.jokes.exception.JokeTellerNotFoundException;
 import com.wostasz.jokes.repository.PersonRepository;
+import lombok.SneakyThrows;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,52 +31,55 @@ public class JokeService {
     private PersonRepository personRepository;
 
     @Autowired
+    private PersonService personService;
+
+    @Autowired
     public JokeService(WebClient.Builder builder) {
         client = builder.baseUrl("http://www.icndb.com/api/").build();
     }
 
-    public Mono<String> getJokeAsync(String first, String last) throws JokeTellerNotFoundException {
+    @SneakyThrows
+    public Mono<String> getJokeAsync(String first, String last) {
         String base = "http://api.icndb.com/jokes/random?limitTo=[nerdy]";
 
         String url = String.format("%s&firstName=%s&lastName=%s", base, first, last);
 
         Optional<Person> optionalPerson = personRepository.findByName(first);
 
-        if (optionalPerson.isPresent()) {
+        List<String[]> personList = personService.getPersonsFromCSVFile(optionalPerson);
+
+        List<String> header = personList.size() > 0 ? Arrays.asList(personList.get(0) ): null;
+
+        System.out.println("????????????????????????????????????????????????????????????");
+        System.out.println(header != null ? header.toString() : "Header is null");
+
+        if(header == null)
+            return null;
+
+        int firstNameIndex = header.indexOf("Name");
+        int lastNameIndex = header.indexOf("Age");
+
+        int index = -1;
+
+        for (String[] strings : personList) {
+            if(strings[firstNameIndex].equals(first) && strings[lastNameIndex].equals(last))
+                index = personList.indexOf(strings);
+        }
+        final int finalIndex = index;
+
+        if(finalIndex > -1){
             return client.get()
                     .uri(uriBuilder -> uriBuilder.path("/jokes/random")
-                            .queryParam("limitTo", "[nerdy]")
-                            .queryParam("firstName", optionalPerson.get().getName())
-                            .queryParam("lastName", String.valueOf(optionalPerson.get().getAge()))
+                            //.queryParam("limitTo", "[nerdy]")
+                            .queryParam("firstName", personList.get(finalIndex)[firstNameIndex])
+                            .queryParam("lastName", String.valueOf(personList.get(finalIndex)[lastNameIndex]))
                             .build())
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(JokeResponse.class)
                     .map(jokeResponse -> jokeResponse.getValue().getJoke());
-        } else {
-            LOGGER.error("HTTP server not found ");
         }
         return null;
+
     }
 }
-
-
-//        try {
-//            if (optionalPerson.isPresent()) {
-//                return client.get()
-//                        .uri(uriBuilder -> uriBuilder.path("/jokes/random")
-//                                .queryParam("limitTo", "[nerdy]")
-//                                .queryParam("firstName", optionalPerson.get().getName())
-//                                .queryParam("lastName", String.valueOf(optionalPerson.get().getAge()))
-//                                .build())
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .retrieve()
-//                        .bodyToMono(JokeResponse.class)
-//                        .map(jokeResponse -> jokeResponse.getValue().getJoke());
-//            }
-//        } catch (HttpServerErrorException e) {
-//            throw e;
-//        }
-//        return null;
-
-

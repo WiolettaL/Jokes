@@ -23,7 +23,7 @@ public class JokeController {
     private JokeService jokeService;
 
     @GetMapping(value = "/joke")
-    public Mono<String> getJoke(@RequestParam("first") String first, @RequestParam("last") String last) throws JokeTellerNotFoundException {
+    public Mono<String> getJoke(@RequestParam("first") String first, @RequestParam("last") String last){
 
         LOGGER.info("Started method getJoke()");
         return jokeService.getJokeAsync(first, last);
