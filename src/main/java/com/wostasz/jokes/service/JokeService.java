@@ -40,7 +40,7 @@ public class JokeService {
 
         JokeResDTO jokeResDTO = restTemplate.getForObject(uriBuilder.toUriString(), JokeResDTO.class);
 
-        if (personService.getPersonsFromFile().contains(first)) {
+        if (personService.getPersonsFromFile() != null) {
             return jokeResDTO.getType().contains("success") ? jokeResDTO.getValue().toString() : null;
         } else {
             return "NO SUCH PERSON";

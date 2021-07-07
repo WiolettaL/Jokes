@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,34 +66,18 @@ public class PersonService {
 
     }
 
-    public List<Object> getPersonsFromFile() throws IOException, CsvException {
+    public List<String> getPersonsFromFile() throws IOException {
 
-        List<Object> csvValues;
+        File file = new File(csvPath);
 
-//        File file = new File(csvPath);
-
-//        MultipartFile multipartFile = new MockMultipartFile("test.csv", new FileInputStream(file));
-
-//        List<ArrayList<String>> responseList = new ArrayList<>();
-//
-//        try (
-//                InputStream input = multipartFile.getInputStream();
-//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input))
-//        ) {
-//
-//            bufferedReader.lines().forEach(value -> {
-//                String[] data = value.split(";",-1);
-//                responseList.add(new ArrayList<>(Arrays.asList(data)));
-//            } );
-//        } catch (IOException e) {
-//            logger.error("Data not found. Exception message: " + e);
-//        }
-
-        try (CSVReader reader = new CSVReader(new FileReader(csvPath))) {
-            csvValues = Arrays.asList(reader.readAll().toArray());
+        List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+        for (String line : lines) {
+            String[] array = line.split(";");
+            System.out.println(array[0]+" "+array[array.length-1]);
         }
 
-        return csvValues;
+        return lines;
+
     }
 
 }
