@@ -22,7 +22,7 @@ class JokeServiceTest {
     @Test
     void getJokeForPersonTest1() {
 
-        Mono<String> joke = service.getJokeForPerson("Anna", "25");
+        String joke = service.getJokeForPerson("Anna", "25");
         String jokeString = joke.toString();
 
         logger.info(jokeString);

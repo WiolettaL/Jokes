@@ -13,6 +13,6 @@ public interface PersonRepository extends JpaRepository<Person, String> {
     @Override
     List<Person> findAll();
 
-    Optional<Person> findByName(String name);
+    Person findByName(String name);
 
 }

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 @RestController
 @CrossOrigin("http://localhost:8080")
@@ -18,7 +17,7 @@ public class JokeController {
     private JokeService jokeService;
 
     @GetMapping(value = "/joke")
-    public Mono<String> getJokeForPerson(@RequestParam("first") String first, @RequestParam("last") String last) {
+    public String getJokeForPerson(@RequestParam("first") String first, @RequestParam("last") String last) {
         LOGGER.info("Started method getJokeForPerson().");
         return jokeService.getJokeForPerson(first, last);
 

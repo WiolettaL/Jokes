@@ -17,7 +17,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +28,7 @@ public class PersonService {
     private PersonRepository personRepository;
 
     @Value("${resource.path.InputDirectory}")
-    private String path;
+    private String csvPath;
 
     public long getAllPersonsAmount() {
         return personRepository.count();
@@ -46,6 +45,7 @@ public class PersonService {
     }
 
     public Double getPersonsAverageAge(Person person) {
+
         List<Person> optionalPersons = personRepository.findAll();
 
         return optionalPersons
@@ -64,35 +64,33 @@ public class PersonService {
 
     }
 
-    public List<String[]> getPersonsFromCSVFile(Optional<Person> byName) throws IOException, CsvException {
-        List<String[]> csvValues;
+    public List<Object> getPersonsFromFile() throws IOException, CsvException {
 
-        System.out.println(path);
-        File file = new File(path);
+        List<Object> csvValues;
 
-        MultipartFile multipartFile = new MockMultipartFile("test.csv", new FileInputStream(file));
+//        File file = new File(csvPath);
 
-        System.out.println(file.getAbsolutePath());
+//        MultipartFile multipartFile = new MockMultipartFile("test.csv", new FileInputStream(file));
 
-        List<ArrayList<String>> responseList = new ArrayList<>();
-        try (
-                InputStream input = multipartFile.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input))
-        ){
-            bufferedReader.lines().forEach(value -> {
-                String[] data = value.split(",",-1);
-                responseList.add(new ArrayList<>(Arrays.asList(data)));
-            });
-        } catch (IOException e) {
-            logger.error("Data not found. Exception message: " + e);
+//        List<ArrayList<String>> responseList = new ArrayList<>();
+//
+//        try (
+//                InputStream input = multipartFile.getInputStream();
+//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input))
+//        ) {
+//
+//            bufferedReader.lines().forEach(value -> {
+//                String[] data = value.split(";",-1);
+//                responseList.add(new ArrayList<>(Arrays.asList(data)));
+//            } );
+//        } catch (IOException e) {
+//            logger.error("Data not found. Exception message: " + e);
+//        }
+
+        try (CSVReader reader = new CSVReader(new FileReader(csvPath))) {
+            csvValues = Arrays.asList(reader.readAll().toArray());
         }
 
-        System.out.println(responseList.get(1).toString());
-
-        try (CSVReader reader = new CSVReader(new FileReader(path))) {
-            csvValues = reader.readAll();
-            csvValues.forEach(x -> System.out.println(Arrays.toString(x)));
-        }
         return csvValues;
     }
 

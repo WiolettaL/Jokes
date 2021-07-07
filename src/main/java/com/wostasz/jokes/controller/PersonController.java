@@ -1,5 +1,6 @@
 package com.wostasz.jokes.controller;
 
+import com.opencsv.exceptions.CsvException;
 import com.wostasz.jokes.domain.HobbyEnum;
 import com.wostasz.jokes.domain.Person;
 import com.wostasz.jokes.domain.PersonDTO;
@@ -7,6 +8,7 @@ import com.wostasz.jokes.service.PersonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -38,6 +40,11 @@ public class PersonController {
     @GetMapping("/totalHobbies")
     public ResponseEntity<List<HobbyEnum>> getAllHobbies() {
         return ResponseEntity.ok(service.getAllHobbies());
+    }
+
+    @GetMapping("/get/persone")
+    public ResponseEntity<List<Object>> getPersonsFromFile() throws IOException, CsvException {
+        return ResponseEntity.ok(service.getPersonsFromFile());
     }
 
 }
